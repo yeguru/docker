@@ -8,28 +8,7 @@ resource "aws_instance" "this" {
     volume_size = 50  # Set root volume size to 50GB
     volume_type = "gp3"  # Use gp3 for better performance (optional)
   }
- 
-  provisioner "file" {
-    source      = "docker.sh"
-    destination = "/tmp/docker.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/docker.sh ",
-      "sudo sh /tmp/docker.sh "
-    ]
-  }
-
-  connection {
-    host = aws_instance.this.public_ip
-  # host = self.public_ip
-    type = "ssh"
-    user     = "ec2-user"
-    password = "DevOps321"
-  }  
-
-  #user_data = file("docker.sh")
+  user_data = file("docker.sh")
 
   tags = {
     Name    = "docker"
